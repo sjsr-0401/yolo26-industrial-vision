@@ -1,0 +1,214 @@
+<Window x:Class="InspectView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:InspectView.ViewModels"
+        Title="InspectView — YOLO26 Industrial Defect Inspector"
+        Width="1280" Height="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a2e"
+        AllowDrop="True"
+        Drop="Window_Drop"
+        DragOver="Window_DragOver">
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style x:Key="DarkButton" TargetType="Button">
+            <Setter Property="Background" Value="#2d5aa0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3a6bc5"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1e4080"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MetricCard" TargetType="Border">
+            <Setter Property="Background" Value="#16213e"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="500"/>
+            <ColumnDefinition Width="340"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT: Image Display -->
+        <Grid Grid.Column="0" Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Toolbar -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                <Button Content="Load Model" Command="{Binding LoadModelCommand}"
+                        Style="{StaticResource DarkButton}" Margin="0,0,8,0"/>
+                <Button Content="Open Images" Command="{Binding OpenImagesCommand}"
+                        Style="{StaticResource DarkButton}" Margin="0,0,8,0"/>
+                <Button Content="Export CSV" Command="{Binding ExportCsvCommand}"
+                        Style="{StaticResource DarkButton}" Margin="0,0,8,0"/>
+                <Button Content="Reset" Command="{Binding ResetStatsCommand}"
+                        Style="{StaticResource DarkButton}" Background="#444"/>
+            </StackPanel>
+
+            <!-- Image -->
+            <Border Grid.Row="1" Background="#0f1020" CornerRadius="8" ClipToBounds="True">
+                <Grid>
+                    <TextBlock Text="Drag &amp; Drop Images Here"
+                               FontSize="20" Foreground="#555"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Visibility="{Binding DisplayImage, Converter={StaticResource NullToVisibility}}"/>
+                    <Image Source="{Binding DisplayImage}" Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Grid>
+            </Border>
+
+            <!-- Status Bar -->
+            <Border Grid.Row="2" Background="#16213e" CornerRadius="4" Padding="12,6" Margin="0,8,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding StatusText}" Foreground="#aaa" FontSize="12"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ModelInfo}" Foreground="#6aa"
+                               FontSize="12" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- RIGHT: Control Panel -->
+        <Grid Grid.Column="1" Margin="0,12,12,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Metrics -->
+            <TextBlock Grid.Row="0" Text="INSPECTION METRICS" Foreground="#6aa"
+                       FontSize="13" FontWeight="SemiBold" Margin="4,0,0,8"/>
+
+            <UniformGrid Grid.Row="1" Columns="2" Margin="0,0,0,8">
+                <Border Style="{StaticResource MetricCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding TotalImages}" Foreground="White"
+                                   FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Total" Foreground="#888" FontSize="11"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MetricCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding AvgInferenceMs, StringFormat={}{0:F1} ms}"
+                                   Foreground="#4fc3f7" FontSize="28" FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Avg Speed" Foreground="#888" FontSize="11"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MetricCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding PassCount}" Foreground="#66bb6a"
+                                   FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Pass" Foreground="#888" FontSize="11"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource MetricCard}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding FailCount}" Foreground="#ef5350"
+                                   FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Fail" Foreground="#888" FontSize="11"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Confidence Slider -->
+            <Border Grid.Row="2" Style="{StaticResource MetricCard}" Margin="4,0,4,8">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="Confidence Threshold" Foreground="#aaa" FontSize="12"/>
+                        <TextBlock Text="{Binding ConfidenceThreshold, StringFormat={}{0:F2}}"
+                                   Foreground="White" FontSize="12" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Slider Value="{Binding ConfidenceThreshold}" Minimum="0.05" Maximum="0.95"
+                            TickFrequency="0.05" IsSnapToTickEnabled="True"
+                            Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Detection Log -->
+            <Border Grid.Row="3" Background="#16213e" CornerRadius="8" Padding="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="DETECTION LOG" Foreground="#6aa" FontSize="13"
+                               FontWeight="SemiBold" Margin="4,0,0,8"/>
+
+                    <ListView Grid.Row="1" ItemsSource="{Binding DetectionLog}"
+                              Background="Transparent" BorderThickness="0"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="6,4" Margin="0,1"
+                                        CornerRadius="4"
+                                        Background="#1a1a3e">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" FontSize="11"
+                                                   Foreground="{Binding Passed, Converter={StaticResource PassFailColor}}"
+                                                   Text="{Binding DefectName}" FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding FileName}"
+                                                   Foreground="#666" FontSize="10"
+                                                   Margin="8,0" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding InferenceMs, StringFormat={}{0:F0}ms}"
+                                                   Foreground="#4fc3f7" FontSize="10"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

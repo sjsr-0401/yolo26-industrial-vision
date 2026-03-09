@@ -1,0 +1,87 @@
+{
+  "YOLO26n (Nano)": {
+    "onnx_size_mb": 9.6,
+    "GPU (CUDA)": {
+      "provider": "CUDAExecutionProvider",
+      "input_shape": "[1, 3, 1024, 1024]",
+      "output_shape": "[1, 300, 6]",
+      "warmup": 10,
+      "iterations": 100,
+      "mean_ms": 18.97,
+      "median_ms": 18.64,
+      "min_ms": 16.9,
+      "max_ms": 24.83,
+      "std_ms": 1.49,
+      "fps": 52.7,
+      "p95_ms": 23.03,
+      "p99_ms": 24.22,
+      "avg_detections": 1.3
+    },
+    "CPU": {
+      "provider": "CPUExecutionProvider",
+      "input_shape": "[1, 3, 1024, 1024]",
+      "output_shape": "[1, 300, 6]",
+      "warmup": 10,
+      "iterations": 100,
+      "mean_ms": 102.54,
+      "median_ms": 98.95,
+      "min_ms": 91.18,
+      "max_ms": 225.62,
+      "std_ms": 18.04,
+      "fps": 9.8,
+      "p95_ms": 111.72,
+      "p99_ms": 215.75,
+      "avg_detections": 1.3
+    }
+  },
+  "YOLO26s (Small)": {
+    "onnx_size_mb": 36.7,
+    "GPU (CUDA)": {
+      "provider": "CUDAExecutionProvider",
+      "input_shape": "[1, 3, 1024, 1024]",
+      "output_shape": "[1, 300, 6]",
+      "warmup": 10,
+      "iterations": 100,
+      "mean_ms": 33.13,
+      "median_ms": 33.03,
+      "min_ms": 30.81,
+      "max_ms": 37.18,
+      "std_ms": 1.39,
+      "fps": 30.2,
+      "p95_ms": 35.61,
+      "p99_ms": 37.08,
+      "avg_detections": 1.3
+    },
+    "CPU": {
+      "provider": "CPUExecutionProvider",
+      "input_shape": "[1, 3, 1024, 1024]",
+      "output_shape": "[1, 300, 6]",
+      "warmup": 10,
+      "iterations": 100,
+      "mean_ms": 296.31,
+      "median_ms": 291.9,
+      "min_ms": 278.32,
+      "max_ms": 347.97,
+      "std_ms": 13.41,
+      "fps": 3.4,
+      "p95_ms": 323.2,
+      "p99_ms": 338.46,
+      "avg_detections": 1.3
+    }
+  },
+  "yolo26n_gc10det_v4_aug": {
+    "model": "YOLO26n",
+    "dataset": "GC10-DET (augmented 4329 images)",
+    "imgsz": 1024,
+    "onnx_size_mb": 9.6,
+    "mAP50": 0.726,
+    "best_epoch": 56,
+    "total_epochs": 90,
+    "early_stop": true,
+    "gpu_inference_ms": 11.5,
+    "gpu_fps": 87,
+    "cpu_inference_ms": 99.2,
+    "cpu_fps": 10,
+    "device": "RTX 3060 12GB"
+  }
+}

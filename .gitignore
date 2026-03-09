@@ -1,0 +1,37 @@
+# Datasets (too large for git)
+datasets/
+
+# Model weights (large binary files)
+results/*/weights/
+*.pt
+*.onnx
+
+# Training artifacts
+results/*/train_batch*.jpg
+results/*/val_batch*.jpg
+results/*/events.out.tfevents.*
+results/*/*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# IDE
+.vs/
+.idea/
+*.suo
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
+
+# C# build artifacts
+src/InspectView/**/bin/
+src/InspectView/**/obj/
+
+# Temp
+*.tmp
+*.bak
