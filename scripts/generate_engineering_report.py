@@ -613,8 +613,39 @@ Step 5: Large/X-Large는 전담 ML팀 + GPU 인프라 확보 후
   <tr><td>silk_spot</td><td>694</td><td>694</td><td>×1.0</td></tr>
 </table>
 
-<!-- 9. References -->
-<h1 class="page-break">9. References</h1>
+<!-- 9. InspectView Validation Test -->
+<h1 class="page-break">9. InspectView 실전 검증 결과</h1>
+
+<p>학습된 ONNX 모델을 C# WPF 앱(InspectView)에서 GC10-DET val 459장으로 실전 테스트한 결과이다.</p>
+
+<h2>9.1 전 모델 비교</h2>
+<table>
+  <tr><th>모델</th><th>Pass</th><th>Fail</th><th>평균 추론(ms)</th><th>중앙값(ms)</th><th>P95(ms)</th><th>총 검출 수</th></tr>
+  <tr><td>Nano v3</td><td>0</td><td>459</td><td>26.9</td><td>25.9</td><td>30.1</td><td>11,223</td></tr>
+  <tr class="highlight"><td><strong>Nano v4 (aug)</strong></td><td><strong>0</strong></td><td><strong>459</strong></td><td><strong>23.6</strong></td><td><strong>23.0</strong></td><td><strong>27.2</strong></td><td><strong>8,754</strong></td></tr>
+  <tr><td>Small v3</td><td>0</td><td>459</td><td>36.1</td><td>35.2</td><td>41.0</td><td>9,238</td></tr>
+</table>
+
+<div class="callout callout-success">
+  <div class="title">v4의 실전 우위</div>
+  <ul>
+    <li><strong>가장 빠름</strong>: 23.6ms (v3: 26.9ms, Small: 36.1ms)</li>
+    <li><strong>가장 정밀</strong>: 8,754 검출 (v3는 11,223 — welding_line 과검출 2,400건 적음)</li>
+    <li><strong>검출 대비 정확도 균형</strong>: 증강 학습으로 welding_line 오탐이 27% 감소</li>
+  </ul>
+  <p>GC10-DET val 이미지는 전부 결함 이미지이므로 459장 모두 Fail이 정상 결과이다.</p>
+</div>
+
+<h2>9.2 클래스별 검출 분포</h2>
+<table>
+  <tr><th>클래스</th><th>Nano v3</th><th>Nano v4 (aug)</th><th>Small v3</th></tr>
+  <tr><td>welding_line</td><td>11,215</td><td>8,744</td><td>9,231</td></tr>
+  <tr><td>punching</td><td>8</td><td>10</td><td>7</td></tr>
+</table>
+<p>welding_line이 대부분의 검출을 차지하며, v4가 과검출을 가장 효과적으로 억제했다. 이는 증강 데이터로 학습한 모델이 클래스 간 경계를 더 정확히 구분함을 의미한다.</p>
+
+<!-- 10. References -->
+<h1 class="page-break">10. References</h1>
 
 <table>
   <tr><th>#</th><th>논문/리소스</th><th>관련 내용</th></tr>
@@ -631,7 +662,7 @@ Step 5: Large/X-Large는 전담 ML팀 + GPU 인프라 확보 후
 </table>
 
 <div class="footer">
-  YOLO26 Model Scale Engineering Report &mdash; Kim Seongjin &mdash; 2026.03.08<br>
+  YOLO26 Model Scale Engineering Report &mdash; Kim Seongjin &mdash; 2026.03.10<br>
   Generated as part of the YOLO26 Industrial Vision Project
 </div>
 

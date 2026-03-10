@@ -1,0 +1,50 @@
+{
+  "Nano v3": {
+    "model": "Nano v3",
+    "total_images": 459,
+    "pass": 0,
+    "fail": 459,
+    "errors": 0,
+    "avg_inference_ms": 26.9,
+    "median_inference_ms": 25.9,
+    "p95_inference_ms": 30.1,
+    "provider": "CUDAExecutionProvider",
+    "class_detections": {
+      "welding_line": 11215,
+      "punching": 8
+    },
+    "total_detections": 11223
+  },
+  "Nano v4 (aug)": {
+    "model": "Nano v4 (aug)",
+    "total_images": 459,
+    "pass": 0,
+    "fail": 459,
+    "errors": 0,
+    "avg_inference_ms": 23.6,
+    "median_inference_ms": 23.0,
+    "p95_inference_ms": 27.2,
+    "provider": "CUDAExecutionProvider",
+    "class_detections": {
+      "welding_line": 8744,
+      "punching": 10
+    },
+    "total_detections": 8754
+  },
+  "Small v3": {
+    "model": "Small v3",
+    "total_images": 459,
+    "pass": 0,
+    "fail": 459,
+    "errors": 0,
+    "avg_inference_ms": 36.1,
+    "median_inference_ms": 35.2,
+    "p95_inference_ms": 41.0,
+    "provider": "CUDAExecutionProvider",
+    "class_detections": {
+      "welding_line": 9231,
+      "punching": 7
+    },
+    "total_detections": 9238
+  }
+}
