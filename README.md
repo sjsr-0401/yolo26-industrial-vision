@@ -24,6 +24,15 @@ From dataset preparation to ONNX deployment with a C# WPF inspection app.
 - **Augmentation > Scaling**: +3.6% from data augmentation vs +2.7% from Nano→Small scaling
 - **Class imbalance fix**: 12.4× → 2.4× imbalance ratio (5× improvement via Albumentations pipeline)
 
+<p align="center">
+  <img src="docs/mAP_comparison.png" width="48%" alt="mAP Comparison"/>
+  <img src="docs/benchmark_comparison.png" width="48%" alt="Benchmark Comparison"/>
+</p>
+
+<p align="center">
+  <img src="docs/pipeline_diagram.png" width="90%" alt="Pipeline Overview"/>
+</p>
+
 ---
 
 ## Datasets
