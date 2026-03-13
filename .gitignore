@@ -35,3 +35,8 @@ src/InspectView/**/obj/
 # Temp
 *.tmp
 *.bak
+
+# .NET build outputs
+bin/
+obj/
+*.user
